@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Для тебя | Наша фотография и музыка</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #1a0b1f 0%, #2a112f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'Montserrat', sans-serif;
+            padding: 16px;
+        }
+
+        .love-card {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 248, 245, 0.1);
+            backdrop-filter: blur(2px);
+            border-radius: 64px 48px 64px 48px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 200, 220, 0.2);
+            overflow: hidden;
+            transition: 0.3s;
+            padding: 20px 20px 30px;
+            text-align: center;
+        }
+
+        .greeting {
+            color: #ffd9e6;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .greeting span {
+            display: inline-block;
+            background: #ff3366a0;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff3366, #ff6b4a);
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px 0 20px;
+            font-family: inherit;
+            width: 80%;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .heart-content {
+            display: none;
+            animation: fadeRise 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+
+        .heart-content.active {
+            display: block;
+        }
+
+        @keyframes fadeRise {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .photo-frame {
+            margin: 20px 0 20px;
+            border-radius: 48px;
+            background: linear-gradient(135deg, #ff99bb, #ff4d6d);
+            padding: 5px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 44px;
+            display: block;
+            background: #2a1c2e;
+        }
+
+        .music-player {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 56px;
+            padding: 10px 20px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid #ff8caa;
+        }
+
+        .track-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff0f5;
+            font-weight: 500;
+        }
+
+        .track-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: #ff4d6d30;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+
+        .play-pause {
+            background: #ff4477;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .play-pause:active {
+            transform: scale(0.94);
+        }
+
+        .tiny-note {
+            margin-top: 18px;
+            font-size: 11px;
+            color: #ffb7ce;
+            opacity: 0.8;
+        }
+
+        button {
+            background: none;
+            border: none;
+        }
+        
+        .photo-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #ff99bb, #ff4d6d);
+            border-radius: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .photo-placeholder span {
+            font-size: 48px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="love-card">
+    <div class="greeting">
+        <span>✨ для самой красивой ✨</span>
+    </div>
+
+    <button class="start-btn" id="startButton">💖 НАЧАЛО 💖</button>
+
+    <div id="magicContent" class="heart-content">
+        <!-- Только фотография -->
+        <div class="photo-frame" id="ourPhotoFrame">
+            <div id="photoContainer"></div>
+        </div>
+
+        <!-- Музыкальный плеер -->
+        <div class="music-player">
+            <div class="track-info">
+                <span>🎧</span>
+                <div class="track-name">Miyagi & Эндшпиль — Не грусти</div>
+            </div>
+            <button class="play-pause" id="playPauseBtn">▶️ Слушать</button>
+        </div>
+        <div class="tiny-note">
+            🌙 для тебя, с любовью...
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ========== ТВОИ ФАЙЛЫ ==========
+        // Фотография (положи в ту же папку что и index.html)
+        const YOUR_PHOTO_URL = "photo_2026-04-27_21-22-14.jpg";
+        
+        // Песня (положи в ту же папку что и index.html)
+        const YOUR_MP3_URL = "JEndshpilMiyaGi_-_Ne_grusti_76919879.mp3";
+        // =================================
+        
+        // Загрузка фотографии
+        function loadPhoto(url) {
+            const container = document.getElementById('photoContainer');
+            container.innerHTML = '';
+            
+            const img = new Image();
+            img.style.width = '100%';
+            img.style.borderRadius = '44px';
+            img.style.display = 'block';
+            img.style.cursor = 'pointer';
+            
+            img.onload = function() {
+                container.innerHTML = '';
+                container.appendChild(img);
+                img.addEventListener('click', () => window.open(url, '_blank'));
+                console.log("✅ Фото загружено!");
+            };
+            
+            img.onerror = function() {
+                container.innerHTML = `
+                    <div class="photo-placeholder">
+                        <span>📸</span>
+                        <p>Фото не найдено!</p>
+                        <p style="font-size: 12px;">Файл "${url}" должен лежать в той же папке</p>
+                    </div>
+                `;
+                console.error("❌ Фото не загружено:", url);
+            };
+            
+            img.src = url;
+        }
+        
+        // МУЗЫКА
+        let audio = new Audio();
+        let isPlaying = false;
+        
+        function initMusic(musicUrl) {
+            audio.src = musicUrl;
+            audio.preload = "auto";
+            audio.loop = true;
+            audio.load();
+            console.log("🎵 Загружаем музыку:", musicUrl);
+        }
+        
+        function startMusic() {
+            if (!audio.src || audio.src === window.location.href) {
+                console.error("Нет ссылки на музыку!");
+                return;
+            }
+            
+            audio.play().then(() => {
+                isPlaying = true;
+                playBtn.innerHTML = "⏸️ Пауза";
+                console.log("🎶 Музыка играет!");
+            }).catch(e => {
+                console.error("Ошибка воспроизведения:", e);
+                // Не показываем alert, чтобы не раздражать
+            });
+        }
+        
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = "▶️ Слушать";
+                isPlaying = false;
+            } else {
+                audio.play().catch(e => {
+                    console.log("Ошибка:", e);
+                });
+                playBtn.innerHTML = "⏸️ Пауза";
+                isPlaying = true;
+            }
+        }
+        
+        // Инициализируем музыку
+        initMusic(YOUR_MP3_URL);
+        
+        const playBtn = document.getElementById('playPauseBtn');
+        playBtn.addEventListener('click', togglePlay);
+        
+        audio.addEventListener('ended', () => {
+            audio.currentTime = 0;
+            audio.play();
+        });
+        audio.addEventListener('play', () => {
+            isPlaying = true;
+            playBtn.innerHTML = "⏸️ Пауза";
+        });
+        audio.addEventListener('pause', () => {
+            isPlaying = false;
+            playBtn.innerHTML = "▶️ Слушать";
+        });
+        
+        const startBtn = document.getElementById('startButton');
+        const contentBlock = document.getElementById('magicContent');
+        
+        startBtn.addEventListener('click', () => {
+            if (!contentBlock.classList.contains('active')) {
+                contentBlock.classList.add('active');
+                startBtn.style.opacity = '0.7';
+                startBtn.disabled = true;
+                startBtn.innerText = '✨ Уже сияет ✨';
+                
+                // Загружаем фото
+                loadPhoto(YOUR_PHOTO_URL);
+                
+                // Включаем музыку
+                startMusic();
+            }
+        });
+        
+        console.log("✅ Страница загружена!");
+        console.log("📁 Ищем фото:", YOUR_PHOTO_URL);
+        console.log("🎵 Ищем песню:", YOUR_MP3_URL);
+        console.log("💡 Файлы должны лежать в одной папке с index.html");
+    })();
+</script>
+</body>
+</html>
